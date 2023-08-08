@@ -1,6 +1,7 @@
-import Image from "next/image";
-import Link from 'next/link'
+"use client"
+import Link from "next/link";
 import { request } from "@/server/request";
+import Slick from "@/components/Slick";
 
 async function getData() {
   try {
@@ -9,29 +10,39 @@ async function getData() {
     console.log(err);
   }
 }
-
+async function getLast() {
+  try {
+    return request("last-products");
+  } catch (err) {
+    console.log(err);
+  }
+}
 export default async function Home() {
   const { data: categories } = await getData();
+  const { data: latestProducts } = await getLast();
+
   return (
     <main className="container">
-      {/* <Image
-        src="https://kursi24.uz/upload/iblock/3fe/3fed21cae9c2e2a1cfd173f40697379d.jpg"
-        alt="Najot ta'lim"
-        width={300}
-        height={500}
-      /> */}
+      <h1>Songgi qoshilgan mahsulotlar</h1>
+      <div className="slick">
+      <Slick latest={latestProducts}/>
+      </div>
       <h1>Mahsulotlar kategoriyasi</h1>
       <div className="cards">
-      {categories?.map((ctg) => (
-        <div key={ctg._id}>
-          <Link href={`category/${ctg._id}`}>
-            <div className="card">
-            <img style={{height:"300px", width:"400px"} }src={ctg.images.url} alt="" />
-            {ctg.name}
-            </div>
+        {categories?.map((ctg) => (
+          <div key={ctg._id}>
+            <Link href={`category/${ctg._id}`}>
+              <div className="card">
+                <img
+                  style={{ height: "300px", width: "400px" }}
+                  src={ctg.image.url}
+                  alt=""
+                />
+                {ctg.name}
+              </div>
             </Link>
-        </div>
-      ))}
+          </div>
+        ))}
       </div>
     </main>
   );

@@ -1,6 +1,9 @@
+"use <client></client>"
 import { Inter } from 'next/font/google'
 import '../globals.css';
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { ReduxProvider } from '@/redux/provider';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -15,7 +18,10 @@ export default function RootLayout({ children }) {
         
       </head>
       <body className={inter.className}>
+        {/* <ReduxProvider> */}
+
         {children}
+        {/* </ReduxProvider> */}
       </body>
     </html>
   )
